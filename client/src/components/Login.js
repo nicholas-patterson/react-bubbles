@@ -19,7 +19,8 @@ const Login = props => {
     axios
       .post("http://localhost:5000/api/login", creds)
       .then(res => {
-        localStorage.setItem("token", res.data.token);
+        console.log(res);
+        localStorage.setItem("token", res.data.payload);
       })
       .catch(err => console.log(err.response));
     props.history.push("/bubbles");
