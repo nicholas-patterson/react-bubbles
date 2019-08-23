@@ -16,9 +16,25 @@ const BubblePage = () => {
       .catch(err => console.log(err.response));
   }, []);
 
+  const updateColors = updatedColor => {
+    setColorList(
+      colorList.map(color =>
+        color.id === updatedColor.id ? updatedColor : color
+      )
+    );
+  };
+
+  const deleteColors = colors => {
+    setColorList(colors);
+  };
+
   return (
     <>
-      <ColorList colors={colorList} updateColors={setColorList} />
+      <ColorList
+        colors={colorList}
+        updateColors={updateColors}
+        deleteColors={deleteColors}
+      />
       <Bubbles colors={colorList} />
     </>
   );

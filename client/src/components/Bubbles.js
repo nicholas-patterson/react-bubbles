@@ -12,6 +12,8 @@ const Bubbles = ({ colors }) => {
     setBubbleData(generateBubbleData);
   }, [colors]);
 
+  console.log("COLORS IN BUBBLES", colors);
+
   return (
     <div className="bubble-wrap">
       <p>bubbles</p>
