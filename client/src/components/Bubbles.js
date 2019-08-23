@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Pack } from "@potion/layout";
+import { Pie } from "@potion/layout";
+import { Arc } from "@potion/element";
 import { Svg, Circle } from "@potion/element";
 
 const Bubbles = ({ colors }) => {
@@ -15,40 +17,67 @@ const Bubbles = ({ colors }) => {
   console.log("COLORS IN BUBBLES", colors);
 
   return (
-    <div className="bubble-wrap">
-      <p>bubbles</p>
-      <Svg width={400} height={400}>
-        <Pack
-          data={{
-            children: bubbleData
-          }}
-          sum={datum => datum.value}
-          size={[400, 400]}
-          includeRoot={false}
-          nodeEnter={d => ({ ...d, r: 0 })}
-          animate
-        >
-          {nodes =>
-            nodes
-              .map(({ x, y, r, key }, i) => {
-                if (i < colors.length) {
-                  return (
-                    <Circle
-                      key={key}
-                      cx={x}
-                      cy={y}
-                      r={r}
-                      fill={colors[i].code.hex}
-                    />
-                  );
-                }
-                return null;
-              })
-              .filter(v => v)
-          }
-        </Pack>
-      </Svg>
-    </div>
+    <>
+      <div className="bubble-wrap">
+        <p>bubbles</p>
+        <Svg width={400} height={400}>
+          <Pack
+            data={{
+              children: bubbleData
+            }}
+            sum={datum => datum.value}
+            size={[400, 400]}
+            includeRoot={false}
+            nodeEnter={d => ({ ...d, r: 0 })}
+            animate
+          >
+            {nodes =>
+              nodes
+                .map(({ x, y, r, key }, i) => {
+                  if (i < colors.length) {
+                    return (
+                      <Circle
+                        key={key}
+                        cx={x}
+                        cy={y}
+                        r={r}
+                        fill={colors[i].code.hex}
+                      />
+                    );
+                  }
+                  return null;
+                })
+                .filter(v => v)
+            }
+          </Pack>
+        </Svg>
+        <Svg width={400} height={400}>
+          <Pie
+            data={bubbleData}
+            value={datum => datum.value}
+            id={datum => datum.id}
+            sort={(a, b) => a.id - b.id}
+            nodeEnter={d => ({ ...d, startAngle: d.endAngle })}
+            animate
+          >
+            {nodes =>
+              nodes.map(({ startAngle, endAngle, key }) => (
+                <Arc
+                  key={key}
+                  innerRadius={0}
+                  outerRadius={100}
+                  startAngle={startAngle}
+                  endAngle={endAngle}
+                  fill="black"
+                  stroke="white"
+                  strokeWidth={1}
+                />
+              ))
+            }
+          </Pie>
+        </Svg>
+      </div>
+    </>
   );
 };
 
